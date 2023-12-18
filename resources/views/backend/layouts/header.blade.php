@@ -9,6 +9,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <head>
     <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="Glance Design Dashboard Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
 SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
@@ -45,6 +46,9 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     <script src="{{ asset('template/js/custom.js') }}"></script>
     <link href="{{ asset('template/css/custom.css') }}" rel="stylesheet">
     <!--//Metis Menu -->
+
+    <script src="{{ asset('js/bootstrap_3.4.1_js_bootstrap.min.js') }}"></script>
+
     <style>
         #chartdiv {
             width: 100%;
