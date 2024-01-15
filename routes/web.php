@@ -43,5 +43,6 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'admin.', /
     // include_route_files(__DIR__.'/backend/');
     require_once 'backend/stocks.php';
     require_once 'backend/categories.php';
+    require_once 'backend/products.php';
     require_once 'backend/dashboard.php';
 });

@@ -12,6 +12,10 @@
                 <h2 class="title1 col-md-4">{{ $stock->name }}/Categories</h2>
                 <div class="btn-create">
                     <button class="btn btn-success btn-add-category" {{--data-toggle="modal" data-target="#update-stock-dialog"--}}>Add Category</button>
+                    <a href="{{ route('admin.products.create', $stock->id) }}" class="btn btn-success btn-add-product" {{--data-toggle="modal" data-target="#update-stock-dialog"--}}>Add Product</a>
+                </div>
+                <div class="btn-create-product">
+
                 </div>
                 <div class="bs-example widget-shadow" data-example-id="contextual-table">
                     <h4>Categories List</h4>
