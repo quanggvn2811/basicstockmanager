@@ -18,7 +18,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->nullable();
             $table->string('description')->nullable();
-            $table->string('supplier')->nullable();
+            $table->unsignedBigInteger('supplier_id');
+            $table->foreign('supplier_id')
+                ->references('id')
+                ->on('suppliers')
+                ->onDelete('cascade');
             $table->string('images')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->string('sku', 20)->nullable(); // Sku by stock
