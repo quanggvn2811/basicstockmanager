@@ -13,9 +13,17 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request, Stock $stock)
     {
-
+        $categoryInStock = Category::whereStockId($stock->id)->pluck('id')->toArray();
+        $products = Product::whereIn('category_id', $categoryInStock)
+                        ->with('category')
+                        ->get()
+                        ;
+        return view('backend.product.index')
+            ->withStock($stock)
+            ->withProducts($products)
+            ;
     }
 
     public function create(Request $request, Stock $stock)

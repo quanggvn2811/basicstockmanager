@@ -21,7 +21,7 @@ class Product extends Model
         'name',
         'slug',
         'description',
-        'images',
+        'images', // Todo: fix data too long
         'status',
         'sku',
         'supplier_sku',
@@ -30,5 +30,11 @@ class Product extends Model
         'category_id',
         'supplier_id',
         'quantity',
+        // Todo:: add product type = default = single | multiple & add column sub_product => qty of multiple = default
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

@@ -13,6 +13,7 @@
                 <div class="btn-create">
                     <button class="btn btn-success btn-add-category" {{--data-toggle="modal" data-target="#update-stock-dialog"--}}>Add Category</button>
                     <a href="{{ route('admin.products.create', $stock->id) }}" class="btn btn-success btn-add-product" {{--data-toggle="modal" data-target="#update-stock-dialog"--}}>Add Product</a>
+                    <a href="{{ route('admin.products.index', $stock->id) }}" class="btn btn-dark btn-add-product">All Products</a>
                 </div>
                 <div class="btn-create-product">
 
