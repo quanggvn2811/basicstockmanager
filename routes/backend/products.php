@@ -11,4 +11,6 @@ Route::group([
     Route::get('stock/{stock}/{associated_session?}', [ProductController::class, 'index'])->name('products.index');
     Route::post('stock/{stock}/add/{associated_session?}', [ProductController::class, 'store'])->name('products.store');
     Route::post('stock/{stock}/edit/{category}{associated_session?}', [ProductController::class, 'update'])->name('products.update');
+    Route::post('{product}/update_quantity/{associated_session?}', [ProductController::class, 'updateQuantity'])
+        ->name('products.updateQuantity');
 });

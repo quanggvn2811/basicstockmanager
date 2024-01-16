@@ -112,3 +112,6 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     </script>
     <!-- //requried-jsfiles-for owl -->
 </head>
+<div style="position: absolute; right: 100px; top: 80px; z-index: 9999; display: none" class="alert alert-success bsm-alert">
+    <span class="alert-message">Update successfully!</span>
+</div>

@@ -78,4 +78,17 @@ class ProductController extends Controller
     {
 
     }
+
+    public function updateQuantity(Request $request, Product $product)
+    {
+        $plusVal = $request->get('plus_value');
+        $product->update([
+            'quantity' => $product->quantity + $plusVal,
+        ]);
+
+        return response()->json([
+            'status' => 'Update quantity successfully!',
+            'product_quantity' => $product->quantity,
+        ]);
+    }
 }

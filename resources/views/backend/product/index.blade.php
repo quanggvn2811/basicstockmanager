@@ -41,11 +41,11 @@
                             <td class="description">{{ $product->description }}</td>
                             <td class="avatar"><img style="max-width: 150px; max-height: 150px" src="{{ $avatarSrc }}"></td>
                             <td class="quantity">
-                                <button class="btn btn-danger"><i class="fa fa-minus"></i></button>
-                                <button class="btn btn-default">
+                                <button class="btn btn-danger subQuantity"><i class="fa fa-minus"></i></button>
+                                <button class="btn btn-default quantityValue">
                                     {{ $product->quantity }}
                                 </button>
-                                <button class="btn btn-success"><i class="fa fa-plus"></i></button>
+                                <button class="btn btn-success plusQuantity"><i class="fa fa-plus"></i></button>
                             </td>
                             <td class="category">{{ $product->category->name }}</td>
                             <td class="status" data-status_val="{{ $product->status }}">{{ $product->status ? 'Active' : 'Inactive' }}</td>
@@ -69,8 +69,6 @@
             max-width: 250px;
         }
     </style>
-    <script src="{{ asset('js/categories.js') }}"></script>
+    <script src="{{ asset('js/products.js') }}"></script>
     <input type="hidden" value="{{ $stock->id }}" name="stock_id">
-    @include('backend.category.includes.add_update_category_dialog')
 @endsection
-{{--{{ script('js/stocks.js') }}--}}
