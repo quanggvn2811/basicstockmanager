@@ -55,7 +55,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="prodPrice">Price</label>
-                                <input required type="number" name="price" class="form-control" id="prodPrice" placeholder="Supplier SKU">
+                                <input required type="number" name="price" class="form-control" id="prodPrice" placeholder="Price">
                             </div>
                             <div class="form-group">
                                 <label for="prodCategory">Category</label>
@@ -69,6 +69,18 @@
                                 <label for="prodQuantity">Quantity</label>
                                 <input required type="number" class="form-control" name="quantity" id="prodQuantity" placeholder="Quantity">
                             </div>
+                            <div class="form-group">
+                                <label for="prodQuantity">Type</label>
+                                <select required class="form-control prodType" id="prodType" name="type">
+                                    @foreach(\App\Models\Product::PRODUCT_TYPE as $val => $type)
+                                        <option value="{{ $val }}">{{ $type }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group sub_product_section" style="display: none">
+                                <label for="prodQuantity">Sub Products</label>
+                                <input required type="text" class="form-control" name="sub_product_sku" id="prodSubProduct" placeholder="Press Sub Product SKU, Ex: MKAR018;MKBN006;...">
+                            </div>
                             @if(isset($product))
                                 <button type="submit" class="btn btn-default">Update</button>
                             @else
@@ -80,4 +92,5 @@
             </div>
         </div>
     </div>
+    <script src="{{ asset('js/products.js') }}"></script>
 @endsection

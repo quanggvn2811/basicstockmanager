@@ -38,6 +38,11 @@ $(document).ready(function() {
         ProductQuantity.prodId = $(this).closest('tr').data('product_id');
         ProductQuantity.updateQuantity(1, $(this).closest('tr').find('.quantityValue'));
     });
+
+    $('.prodType').on('change', function () {
+        const TYPE_MULTIPLE = 2;
+        TYPE_MULTIPLE == $(this).val() ? $('.sub_product_section').show() : $('.sub_product_section').hide();
+    });
 });
 
 

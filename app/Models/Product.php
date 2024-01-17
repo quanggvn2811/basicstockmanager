@@ -17,9 +17,9 @@ class Product extends Model
     const TYPE_OTHER = 3;
 
     const PRODUCT_TYPE = [
-        self::TYPE_SINGLE,
-        self::TYPE_MULTIPLE,
-        self::TYPE_OTHER,
+        self::TYPE_SINGLE => 'Single',
+        self::TYPE_MULTIPLE => 'Multiple',
+        self::TYPE_OTHER => 'Other',
     ];
 
     /**
@@ -33,7 +33,7 @@ class Product extends Model
         'description',
         'images',
         'status',
-        'sku',
+        'sku', // Todo: make sku unique
         'supplier_sku',
         'cost',
         'price',

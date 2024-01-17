@@ -10,6 +10,7 @@ use App\Models\Supplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use phpDocumentor\Reflection\Type;
 
 class ProductController extends Controller
 {
@@ -18,7 +19,7 @@ class ProductController extends Controller
         $categoryInStock = Category::whereStockId($stock->id)->pluck('id')->toArray();
         $products = Product::whereIn('category_id', $categoryInStock)
                         ->with('category')
-                        ->get()
+                        ->paginate(10)
                         ;
         return view('backend.product.index')
             ->withStock($stock)
@@ -52,7 +53,17 @@ class ProductController extends Controller
             'category_id',
             'supplier_id',
             'quantity',
+            'type',
         ]);
+
+        if ($data['type'] && Product::TYPE_MULTIPLE === intval($data['type']) && $request->get('sub_product_sku')) {
+            $subProdSkus = explode(';', $request->get('sub_product_sku'));
+            $subProdSkuArr = array_map('trim', $subProdSkus);
+            $subProdIds = Product::whereIn('sku', $subProdSkuArr)->pluck('id')->toArray();
+            if (count($subProdIds)) {
+                $data['sub_product_id'] = json_encode($subProdIds);
+            }
+        }
 
         $prodImages = [];
 
@@ -71,7 +82,7 @@ class ProductController extends Controller
 
         $product = Product::create($data);
 
-        return redirect()->back();
+        return redirect()->route('admin.products.index', ['stock' => $stock->id]);
     }
 
     public function update()
