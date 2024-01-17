@@ -12,6 +12,16 @@ class Product extends Model
 
     const PUBLIC_PROD_IMAGE_FOLDER = 'Pro_Images';
 
+    const TYPE_SINGLE = 1;
+    const TYPE_MULTIPLE = 2;
+    const TYPE_OTHER = 3;
+
+    const PRODUCT_TYPE = [
+        self::TYPE_SINGLE,
+        self::TYPE_MULTIPLE,
+        self::TYPE_OTHER,
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,7 +31,7 @@ class Product extends Model
         'name',
         'slug',
         'description',
-        'images', // Todo: fix data too long
+        'images',
         'status',
         'sku',
         'supplier_sku',
@@ -30,7 +40,8 @@ class Product extends Model
         'category_id',
         'supplier_id',
         'quantity',
-        // Todo:: add product type = default = single | multiple & add column sub_product => qty of multiple = default
+        'type',
+        'sub_product_id',
     ];
 
     public function category()
