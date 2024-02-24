@@ -10,7 +10,7 @@
         @include('includes.messages')
         <div class="main-page">
             <div class="tables">
-                <h2 class="title1 col-md-4">{{ $stock->name }}/All Products</h2>
+                <h2 class="title1 col-md-4"><a href="{{ route('admin.categories.index', $stock->id) }}">{{ $stock->name }}</a>/All Products</h2>
                 <div class="btn-create">
                     <a href="{{ route('admin.products.create', $stock->id) }}" class="btn btn-success btn-add-product">Add Product</a>
                 </div>

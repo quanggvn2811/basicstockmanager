@@ -9,7 +9,7 @@
     <div id="page-wrapper">
         <div class="main-page">
             <div class="tables">
-                <h2 class="title1 col-md-4" style="width: 100%; margin-top: .8em">{{ $stock->name }}/Add Product</h2>
+                <h2 class="title1 col-md-4" style="width: 100%; margin-top: .8em"><a href="{{ route('admin.categories.index', $stock->id) }}">{{ $stock->name }}</a>/Add Product</h2>
                 <div class="form-grids row widget-shadow" data-example-id="basic-forms">
                     <div class="form-body">
                         <form enctype="multipart/form-data" method="post" action="{{ route('admin.products.store', ['stock' => $stock->id]) }}">
