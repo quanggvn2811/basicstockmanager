@@ -7,6 +7,7 @@
 
 @section('content')
     <div id="page-wrapper">
+        @include('includes.messages')
         <div class="main-page">
             <div class="tables">
                 <h2 class="title1 col-md-4">{{ $stock->name }}/All Products</h2>
@@ -57,9 +58,16 @@
                             </td>
                             <td class="category">{{ $product->category->name }}</td>
                             <td class="status" data-status_val="{{ $product->status }}">{{ $product->status ? 'Active' : 'Inactive' }}</td>
-                            <td>
-                                <button class="btn btn-primary btn-edit-category"><i class="fa fa-edit"></i></button>
-                                <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                            <td class="btn-action">
+                                <button class="btn btn-primary btn-edit-product"><i class="fa fa-edit"></i></button>
+                                <form style="display: inline-block" action="{{ route('admin.products.destroy', $product->id) }}" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" onclick="return confirm('Delete this product, are you sure?')"
+                                            class="btn btn-danger btn-delete-product">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         @endforeach

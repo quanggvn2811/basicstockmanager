@@ -102,4 +102,13 @@ class ProductController extends Controller
             'product_quantity' => $product->quantity,
         ]);
     }
+
+    public function destroy(Product $product)
+    {
+        if (!$product->delete()) {
+            redirect()->back()->withFlashDanger('Something went wrong!');
+        }
+
+        return redirect()->back()->withFlashSuccess('Deleted "' . $product->name . '"');
+    }
 }

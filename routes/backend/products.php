@@ -13,4 +13,6 @@ Route::group([
     Route::post('stock/{stock}/edit/{category}{associated_session?}', [ProductController::class, 'update'])->name('products.update');
     Route::post('{product}/update_quantity/{associated_session?}', [ProductController::class, 'updateQuantity'])
         ->name('products.updateQuantity');
+    Route::delete('delete/{product}/{associated_session?}', [ProductController::class, 'destroy'])
+        ->name('products.destroy');
 });
