@@ -85,9 +85,72 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index', ['stock' => $stock->id]);
     }
 
-    public function update()
+    public function edit(Request $request, Stock $stock, Product $product)
     {
+        $suppliers = Supplier::whereStockId($stock->id)->get();
+        $categories = Category::whereStockId($stock->id)->get();
+        $subProductSku = '';
+        if (Product::TYPE_MULTIPLE === $product->type) {
+            $subProductIds = json_decode($product->sub_product_id);
+            if (!empty($subProductIds)) {
+                $subProducts = Product::whereIn('id', $subProductIds)->pluck('sku')->toArray();
+                $subProductSku = implode('; ', $subProducts);
+            }
+        }
+        return view('backend.product.add_edit_product')
+            ->withStock($stock)
+            ->withSuppliers($suppliers)
+            ->withCategories($categories)
+            ->withProduct($product)
+            ->withSubProductSku($subProductSku)
+            ;
+    }
 
+    public function update(Request $request, Stock $stock, Product $product)
+    {
+        $data = $request->only([
+            'name',
+            // 'slug',
+            'description',
+            'images',
+            'status',
+            'sku',
+            'supplier_sku',
+            'cost',
+            'price',
+            'category_id',
+            'supplier_id',
+            'quantity',
+            'type',
+        ]);
+
+        if ($data['type'] && Product::TYPE_MULTIPLE === intval($data['type']) && $request->get('sub_product_sku')) {
+            $subProdSkus = explode(';', $request->get('sub_product_sku'));
+            $subProdSkuArr = array_map('trim', $subProdSkus);
+            $subProdIds = Product::whereIn('sku', $subProdSkuArr)->pluck('id')->toArray();
+            if (count($subProdIds)) {
+                $data['sub_product_id'] = json_encode($subProdIds);
+            }
+        }
+
+        $prodImages = [];
+
+        if ($request->hasFile('images')) {
+            foreach($request->file('images') as $img)
+            {
+                $imgName = Date('YmdHis') . '_' . $img->getClientOriginalName();
+                $img->move(public_path(Product::PUBLIC_PROD_IMAGE_FOLDER), $imgName);
+                $prodImages[] = $imgName;
+            }
+        }
+
+        $data['images'] = json_encode($prodImages);
+
+        $data['slug'] = Str::slug($data['name']);
+
+        $product->update($data);
+
+        return redirect()->route('admin.products.index', ['stock' => $stock->id]);
     }
 
     public function updateQuantity(Request $request, Product $product)

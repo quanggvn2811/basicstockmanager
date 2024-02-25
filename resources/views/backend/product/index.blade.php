@@ -41,12 +41,15 @@
                         @foreach($products as $product)
                             <?php
                                 $prodImages = json_decode($product->images);
-                                $avatar = $prodImages[0];
-                                $avatarSrc = asset(\App\Models\Product::PUBLIC_PROD_IMAGE_FOLDER . '/' . $avatar);
+                                $avatarSrc = '#';
+                                if (!empty($prodImages[0])) {
+                                    $avatar = $prodImages[0];
+                                    $avatarSrc = asset(\App\Models\Product::PUBLIC_PROD_IMAGE_FOLDER . '/' . $avatar);
+                                }
                                 ?>
                         <tr data-product_id="{{ $product->id }}" class="active product-lines">
                             <td class="sku"> {{ $product->sku }}</td>
-                            <td class="name"><a href="#">{{ $product->name }}</a></td>
+                            <td class="name"><a href="{{ route('admin.products.edit', ['stock' => $stock->id, 'product' => $product->id]) }}">{{ $product->name }}</a></td>
                             <td class="description">{{ $product->description }}</td>
                             <td class="avatar"><img style="max-width: 150px; max-height: 150px" src="{{ $avatarSrc }}"></td>
                             <td class="quantity">
@@ -59,7 +62,7 @@
                             <td class="category">{{ $product->category->name }}</td>
                             <td class="status" data-status_val="{{ $product->status }}">{{ $product->status ? 'Active' : 'Inactive' }}</td>
                             <td class="btn-action">
-                                <button class="btn btn-primary btn-edit-product"><i class="fa fa-edit"></i></button>
+                                <a href="{{ route('admin.products.edit', ['stock' => $stock->id, 'product' => $product->id]) }}" class="btn btn-primary btn-edit-product"><i class="fa fa-edit"></i></a>
                                 <form style="display: inline-block" action="{{ route('admin.products.destroy', $product->id) }}" method="POST">
                                     @csrf
                                     @method('delete')
