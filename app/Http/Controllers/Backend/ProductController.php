@@ -16,14 +16,45 @@ class ProductController extends Controller
 {
     public function index(Request $request, Stock $stock)
     {
+        $suppliers = Supplier::whereStockId($stock->id)->get();
         $categoryInStock = Category::whereStockId($stock->id)->pluck('id')->toArray();
-        $products = Product::whereIn('category_id', $categoryInStock)
-                        ->with('category')
-                        ->paginate(10)
-                        ;
+        $categories = Category::whereStockId($stock->id)->get();
+
+        $category = $request->get('prod_category');
+        if ($category) {
+            $products = Product::where('category_id', $category);
+        } else {
+            $products = Product::whereIn('category_id', $categoryInStock);
+        }
+
+        $name = $request->get('prod_name');
+        if ($name) {
+            $products = $products->where('name', 'like', '%' . $name . '%');
+        }
+
+        $sku = $request->get('prod_sku');
+        if ($sku) {
+            $products = $products->where('sku', 'like', '%' . $sku . '%');
+        }
+
+        $supplier = $request->get('prod_supplier');
+        if ($supplier) {
+            //$products = $products->where('name', 'like', '%' . $name . '%');
+        }
+
+        $quantity = $request->get('prod_quantity');
+        if ($quantity) {
+            $calculation = $request->get('prod_calculation');
+            $products = $products->where('quantity', $calculation, $quantity);
+        }
+
+        $products = $products->with('category')->paginate(10);
+
         return view('backend.product.index')
             ->withStock($stock)
             ->withProducts($products)
+            ->withCategories($categories)
+            ->withSuppliers($suppliers)
             ;
     }
 

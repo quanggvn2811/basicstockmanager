@@ -10,10 +10,14 @@
         @include('includes.messages')
         <div class="main-page">
             <div class="tables">
-                <h2 class="title1 col-md-4"><a href="{{ route('admin.categories.index', $stock->id) }}">{{ $stock->name }}</a>/All Products</h2>
-                <div class="btn-create">
-                    <a href="{{ route('admin.products.create', $stock->id) }}" class="btn btn-success btn-add-product">Add Product</a>
+                <div class="row">
+                    <h2 class="title1 col-md-4"><a href="{{ route('admin.categories.index', $stock->id) }}">{{ $stock->name }}</a> /
+                        <a href="{{ route('admin.products.index', $stock->id) }}">All Products</a></h2>
+                    <div class="btn-create">
+                        <a href="{{ route('admin.products.create', $stock->id) }}" class="btn btn-success btn-add-product">Add Product</a>
+                    </div>
                 </div>
+                @include('backend.product.includes.search_form')
                 <div class="bs-example widget-shadow" data-example-id="contextual-table">
                     <h4>Products List</h4>
                     <div class="row" style="width: 200px; float: right; display: flex">
@@ -51,7 +55,7 @@
                             <td class="sku"> {{ $product->sku }}</td>
                             <td class="name"><a href="{{ route('admin.products.edit', ['stock' => $stock->id, 'product' => $product->id]) }}">{{ $product->name }}</a></td>
                             <td class="description">{{ $product->description }}</td>
-                            <td class="avatar"><img style="max-width: 150px; max-height: 150px" src="{{ $avatarSrc }}"></td>
+                            <td class="avatar" style="padding: 3px"><img class="avatar_product" style="max-width: 120px; max-height: 120px" src="{{ $avatarSrc }}"></td>
                             <td class="quantity">
                                 <button class="btn btn-danger subQuantity"><i class="fa fa-minus"></i></button>
                                 <button class="btn btn-default quantityValue">
@@ -86,6 +90,10 @@
         }
         .product-lines .name, .product-lines .description {
             max-width: 250px;
+        }
+
+        .form-search-advanced input, .form-search-advanced select {
+            border-radius: 4px;
         }
     </style>
     <script src="{{ asset('js/products.js') }}"></script>

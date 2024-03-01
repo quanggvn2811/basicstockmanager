@@ -43,6 +43,19 @@ $(document).ready(function() {
         const TYPE_MULTIPLE = 2;
         TYPE_MULTIPLE == $(this).val() ? $('.sub_product_section').show() : $('.sub_product_section').hide();
     });
+
+    $('.avatar_product').on('click', function (e) {
+        const $this = $(e.target);
+        let imgWith = e.target.offsetWidth;
+        const defaultWidth = 120;
+        if (imgWith > defaultWidth) {
+            $this.css("max-width", defaultWidth);
+            $this.css("max-height", defaultWidth);
+        } else {
+            $this.css("max-width", 300);
+            $this.css("max-height", 300);
+        }
+    });
 });
 
 

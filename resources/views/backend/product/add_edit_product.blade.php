@@ -39,7 +39,7 @@
                                     @foreach($suppliers as $supplier)
                                         <?php
                                             $selectedSupplier = '';
-                                            if ($supplier->id === $product->supplier_id) {
+                                            if ($isEdit && $supplier->id === $product->supplier_id) {
                                                 $selectedSupplier = 'selected';
                                             }
                                         ?>
@@ -82,7 +82,7 @@
                                     @foreach($categories as $category)
                                         <?php
                                             $selectedCategory = '';
-                                            if ($category->id == $product->category_id) {
+                                            if ($isEdit && $category->id == $product->category_id) {
                                                 $selectedCategory = 'selected';
                                             }
                                         ?>
@@ -100,7 +100,7 @@
                                     @foreach(\App\Models\Product::PRODUCT_TYPE as $val => $type)
                                             <?php
                                             $selectedType = '';
-                                            if ($val === $product->type) {
+                                            if ($isEdit && $val === $product->type) {
                                                 $selectedType = 'selected';
                                             }
                                             ?>
