@@ -98,31 +98,79 @@
                                 }
                                 ?>
                                 <div class="form-group sub_product_section  col-md-6" style="display: {{$display}}">
-                                    <label for="prodQuantity">Sub Products</label>
-                                    <input @if($isEdit) value="{{ $subProductSku }}" @endif required type="text" class="form-control" name="sub_product_sku" id="prodSubProduct" placeholder="Press Sub Product SKU, Ex: MKAR018;MKBN006;...">
+                                    <label for="">Sub Products</label>
+                                    <input @if($isEdit) value="{{ $subProductSku }}" @endif type="text" class="form-control" name="sub_product_sku" id="prodSubProduct" placeholder="Press Sub Product SKU, Ex: MKAR018;MKBN006;...">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="prodSupplier">Supplier</label>
-                                <select required class="form-control" id="prodSupplier" name="supplier_id">
-                                    @foreach($suppliers as $supplier)
-                                            <?php
-                                            $selectedSupplier = '';
-                                            if ($isEdit && $supplier->id === $product->supplier_id) {
-                                                $selectedSupplier = 'selected';
-                                            }
-                                            ?>
-                                        <option {{ $selectedSupplier }} value="{{ $supplier->id }}">{{ $supplier->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="prodSupplierSku">Supplier SKU</label>
-                                <input @if($isEdit) value="{{ $product->supplier_sku }}" @endif name="supplier_sku" type="text" class="form-control" id="prodSupplierSku" placeholder="Supplier SKU">
-                            </div>
-                            <div class="form-group">
-                                <label for="prodCost">Cost</label>
-                                <input name="cost" @if($isEdit) value="{{ $product->cost }}" @endif required type="number" class="form-control" id="prodCost" placeholder="Cost">
+                            <div class="form-group suppliers">
+                                <div class="header" style="margin-bottom: 20px">
+                                    <label style="margin-left: -15px" class="col-md-2" for="prodSupplier">Suppliers</label>
+                                    <div class="col-md-4">
+                                        <button type="button" class="btn btn-success btn-add-supplier-row"><i style="margin-right: 10px" class="fa fa-plus"></i>Add Supplier</button>
+                                    </div>
+                                    <label class="col-md-2" for="">Average Cost</label>
+                                    <div class="form-group col-md-3">
+                                        <input type="number" id="avg_cost" @if($isEdit) value="{{ $product->cost }}" @endif readonly name="cost" required class="form-control" placeholder="Average cost">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-primary btn-edit-average-cost"><i class="fa fa-edit"></i></button>
+                                    </div>
+                                </div>
+                                {{--Template--}}
+                                <div data-prod_suppliers_index="2" class="row supplier-row supplier-row-template" style="display: none">
+                                    <div class="form-group col-md-4">
+                                        <select required class="form-control prod_suppliers_id" id="prodSupplier" name="">
+                                            @foreach($suppliers as $supplier)
+                                                    <?php
+                                                    $selectedSupplier = '';
+                                                    if ($isEdit && $supplier->id === $product->supplier_id) {
+                                                        $selectedSupplier = 'selected';
+                                                    }
+                                                    ?>
+                                                <option {{ $selectedSupplier }} value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <input value="0" name="" type="number" class="form-control prod_suppliers_cost" id="" placeholder="Cost">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <input @if($isEdit) value="{{ $product->supplier_sku }}" @endif name="" type="text" class="form-control prod_suppliers_sku" id="" placeholder="Supplier SKU">
+                                    </div>
+                                    <div class="form-group col-md-2 justify-content-center">
+                                        <button type="button" class="btn-delete-supplier-row btn btn-danger"><i class="fa fa-trash"></i></button>
+                                    </div>
+                                </div>
+                                {{--/Template--}}
+                                <div class="row">
+                                    <label class="col-md-4" for="prodSupplier">Supplier Name</label>
+                                    <label class="col-md-3" for="prodSupplierSku">Supplier SKU</label>
+                                    <label class="col-md-3" for="prodCost">Supplier Cost</label>
+                                </div>
+                                <div class="row supplier-row first-supplier-row">
+                                    <div class="form-group col-md-4">
+                                        <select class="form-control prod_suppliers_id" id="prodSupplier" name="prod_suppliers[1][id]">
+                                            @foreach($suppliers as $supplier)
+                                                    <?php
+                                                    $selectedSupplier = '';
+                                                    if ($isEdit && $supplier->id === $product->supplier_id) {
+                                                        $selectedSupplier = 'selected';
+                                                    }
+                                                    ?>
+                                                <option {{ $selectedSupplier }} value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <input name="prod_suppliers[1][cost]" @if($isEdit) value="{{ $product->cost }}" @endif type="number" class="form-control prod_suppliers_cost is_active" id="prodCost" placeholder="Cost">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <input @if($isEdit) value="{{ $product->supplier_sku }}" @endif name="prod_suppliers[1][sku]" type="text" class="form-control prod_suppliers_sku" id="prodSupplierSku" placeholder="Supplier SKU">
+                                    </div>
+                                    <div class="form-group col-md-2 justify-content-center">
+                                        <button type="button" class="btn-delete-supplier-row btn btn-danger"><i class="fa fa-trash"></i></button>
+                                    </div>
+                                </div>
                             </div>
                             @if(isset($product))
                                 <button type="submit" class="btn btn-default">Update</button>
@@ -138,6 +186,14 @@
     <style>
         .add-edit-product-form input, .add-edit-product-form select {
             border-radius: 4px;
+        }
+        .justify-content-center {
+            display: flex;
+            justify-content: center;
+        }
+        .first-supplier-row .btn-delete-supplier-row {
+            opacity: 0.5;
+            pointer-events: none;
         }
     </style>
     <script src="{{ asset('js/products.js') }}"></script>
