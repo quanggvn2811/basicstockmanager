@@ -31,14 +31,14 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>SKU</th>
-                            <th>Name</th>
-                            <th>Description</th>
+                            <th class="hide_with_mobile">SKU</th>
+                            <th >Name</th>
+                            <th class="hide_with_mobile">Description</th>
                             <th>Avatar</th>
                             <th>Quantity</th>
-                            <th>Category</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th class="hide_with_mobile">Category</th>
+                            <th class="hide_with_mobile">Status</th>
+                            <th class="hide_with_mobile">Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -52,9 +52,9 @@
                                 }
                                 ?>
                         <tr data-product_id="{{ $product->id }}" class="active product-lines">
-                            <td class="sku"> {{ $product->sku }}</td>
+                            <td class="sku hide_with_mobile"> {{ $product->sku }}</td>
                             <td class="name"><a href="{{ route('admin.products.edit', ['stock' => $stock->id, 'product' => $product->id]) }}">{{ $product->name }}</a></td>
-                            <td class="description">{{ $product->description }}</td>
+                            <td class="description hide_with_mobile">{{ $product->description }}</td>
                             <td class="avatar" style="padding: 3px"><img class="avatar_product" style="max-width: 120px; max-height: 120px" src="{{ $avatarSrc }}"></td>
                             <td class="quantity">
                                 <button class="btn btn-danger subQuantity"><i class="fa fa-minus"></i></button>
@@ -63,9 +63,9 @@
                                 </button>
                                 <button class="btn btn-success plusQuantity"><i class="fa fa-plus"></i></button>
                             </td>
-                            <td class="category">{{ $product->category->name }}</td>
-                            <td class="status" data-status_val="{{ $product->status }}">{{ $product->status ? 'Active' : 'Inactive' }}</td>
-                            <td class="btn-action">
+                            <td class="category hide_with_mobile">{{ $product->category->name }}</td>
+                            <td class="status hide_with_mobile" data-status_val="{{ $product->status }}">{{ $product->status ? 'Active' : 'Inactive' }}</td>
+                            <td class="btn-action hide_with_mobile">
                                 <a href="{{ route('admin.products.edit', ['stock' => $stock->id, 'product' => $product->id]) }}" class="btn btn-primary btn-edit-product"><i class="fa fa-edit"></i></a>
                                 <form style="display: inline-block" action="{{ route('admin.products.destroy', $product->id) }}" method="POST">
                                     @csrf
@@ -94,6 +94,17 @@
 
         .form-search-advanced input, .form-search-advanced select {
             border-radius: 4px;
+        }
+        @media only screen and (max-width: 400px) {
+            .hide_with_mobile {
+                display: none;
+            }
+            .quantityValue {
+                margin: 5px 0;
+            }
+            .prod_calculation_wrapper {
+                margin-bottom: 15px;
+            }
         }
     </style>
     <script src="{{ asset('js/products.js') }}"></script>

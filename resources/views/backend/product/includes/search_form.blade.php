@@ -29,7 +29,7 @@
                 </div>
                 <div class="form-group row">
                     <label class="col-md-2" for="title">Quantity</label>
-                    <div class="col-md-6">
+                    <div class="col-md-6 prod_calculation_wrapper">
                         <select required class="form-control prodType" id="prodType" name="prod_calculation">
                             <option @if(isset($_GET['prod_calculation']) && $_GET['prod_calculation'] === '=') selected @endif value="=">Equal</option>
                             <option @if(isset($_GET['prod_calculation']) && $_GET['prod_calculation'] === '<') selected @endif value="<">Less</option>
