@@ -33,9 +33,26 @@
                                 <label for="prodDescription">Description</label>
                                 <textarea class="form-control" id="prodDescription" name="description" cols="30" rows="5" placeholder="Description">@if($isEdit) {!! $product->description !!} @endif</textarea>
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInputFile">Images</label>
-                                <input type="file" name="images[]" multiple id="prodImages"> <p class="help-block">Select product image(s)</p>
+                            <?php
+                                if ($isEdit) {
+                                    $prodImages = json_decode($product->images);
+                                    $avatarSrc = '#';
+                                    if (!empty($prodImages[0])) {
+                                        $avatar = $prodImages[0];
+                                        $avatarSrc = asset(\App\Models\Product::PUBLIC_PROD_IMAGE_FOLDER . '/' . $avatar);
+                                    }
+                                }
+                            ?>
+                            <div class="form-group row">
+                                <div class="import-img col-md-2">
+                                    <label for="exampleInputFile">Images</label>
+                                    <input type="file" name="images[]" multiple id="prodImages"> <p class="help-block">Select product image(s)</p>
+                                </div>
+                                <div class="img-avatar col-md-10">
+                                    @if($isEdit)
+                                        <img class="avatar_product" style="max-width: 200px; max-height: 200px" src="{{ $avatarSrc }}">
+                                    @endif
+                                </div>
                             </div>
                             <div class="row" style="margin-left: -15px">
                                 <div class="checkbox form-group col-md-6">
@@ -117,7 +134,13 @@
                                     </div>
                                 </div>
                                 {{--Template--}}
-                                <div data-prod_suppliers_index="2" class="row supplier-row supplier-row-template" style="display: none">
+                                <?php
+                                    $productSuppliersIndex = 1;
+                                    if ($isEdit && $productSuppliers) {
+                                        $productSuppliersIndex = count($productSuppliers);
+                                    }
+                                ?>
+                                <div data-prod_suppliers_index="{{ $productSuppliersIndex }}" class="row supplier-row supplier-row-template" style="display: none">
                                     <div class="form-group col-md-4">
                                         <select required class="form-control prod_suppliers_id" id="prodSupplier" name="">
                                             @foreach($suppliers as $supplier)
@@ -144,33 +167,62 @@
                                 {{--/Template--}}
                                 <div class="row">
                                     <label class="col-md-4" for="prodSupplier">Supplier Name</label>
-                                    <label class="col-md-3" for="prodSupplierSku">Supplier SKU</label>
                                     <label class="col-md-3" for="prodCost">Supplier Cost</label>
+                                    <label class="col-md-3" for="prodSupplierSku">Supplier SKU</label>
                                 </div>
-                                <div class="row supplier-row first-supplier-row">
-                                    <div class="form-group col-md-4">
-                                        <select class="form-control prod_suppliers_id" id="prodSupplier" name="prod_suppliers[1][id]">
-                                            @foreach($suppliers as $supplier)
-                                                    <?php
-                                                    $selectedSupplier = '';
-                                                    if ($isEdit && $supplier->id === $product->supplier_id) {
-                                                        $selectedSupplier = 'selected';
-                                                    }
-                                                    ?>
-                                                <option {{ $selectedSupplier }} value="{{ $supplier->id }}">{{ $supplier->name }}</option>
-                                            @endforeach
-                                        </select>
+                                @if($isEdit)
+                                    @foreach($productSuppliers as $index => $pSupplier)
+                                        <div class="row supplier-row @if(0 === $index) first-supplier-row @endif ">
+                                            <div class="form-group col-md-4">
+                                                <select class="form-control prod_suppliers_id" id="prodSupplier" name="prod_suppliers[{{ $index }}][id]">
+                                                    @foreach($suppliers as $supplier)
+                                                            <?php
+                                                            $selectedSupplier = '';
+                                                            if ($isEdit && $supplier->id === $pSupplier->supplier_id) {
+                                                                $selectedSupplier = 'selected';
+                                                            }
+                                                            ?>
+                                                        <option {{ $selectedSupplier }} value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <input name="prod_suppliers[{{ $index }}][cost]" @if($isEdit) value="{{ $pSupplier->s_cost }}" @endif type="number" class="form-control prod_suppliers_cost is_active" id="prodCost" placeholder="Cost">
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <input @if($isEdit) value="{{ $pSupplier->s_sku }}" @endif name="prod_suppliers[{{ $index }}][sku]" type="text" class="form-control prod_suppliers_sku" id="prodSupplierSku" placeholder="Supplier SKU">
+                                            </div>
+                                            <div class="form-group col-md-2 justify-content-center">
+                                                <button type="button" class="btn-delete-supplier-row btn btn-danger"><i class="fa fa-trash"></i></button>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="row supplier-row first-supplier-row">
+                                        <div class="form-group col-md-4">
+                                            <select class="form-control prod_suppliers_id" id="prodSupplier" name="prod_suppliers[0][id]">
+                                                @foreach($suppliers as $supplier)
+                                                        <?php
+                                                        $selectedSupplier = '';
+                                                        if ($isEdit && $supplier->id === $product->supplier_id) {
+                                                            $selectedSupplier = 'selected';
+                                                        }
+                                                        ?>
+                                                    <option {{ $selectedSupplier }} value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <input name="prod_suppliers[0][cost]" @if($isEdit) value="{{ $product->cost }}" @endif type="number" class="form-control prod_suppliers_cost is_active" id="prodCost" placeholder="Cost">
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <input @if($isEdit) value="{{ $product->supplier_sku }}" @endif name="prod_suppliers[0][sku]" type="text" class="form-control prod_suppliers_sku" id="prodSupplierSku" placeholder="Supplier SKU">
+                                        </div>
+                                        <div class="form-group col-md-2 justify-content-center">
+                                            <button type="button" class="btn-delete-supplier-row btn btn-danger"><i class="fa fa-trash"></i></button>
+                                        </div>
                                     </div>
-                                    <div class="form-group col-md-3">
-                                        <input name="prod_suppliers[1][cost]" @if($isEdit) value="{{ $product->cost }}" @endif type="number" class="form-control prod_suppliers_cost is_active" id="prodCost" placeholder="Cost">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <input @if($isEdit) value="{{ $product->supplier_sku }}" @endif name="prod_suppliers[1][sku]" type="text" class="form-control prod_suppliers_sku" id="prodSupplierSku" placeholder="Supplier SKU">
-                                    </div>
-                                    <div class="form-group col-md-2 justify-content-center">
-                                        <button type="button" class="btn-delete-supplier-row btn btn-danger"><i class="fa fa-trash"></i></button>
-                                    </div>
-                                </div>
+                                @endif
                             </div>
                             @if(isset($product))
                                 <button type="submit" class="btn btn-default">Update</button>
