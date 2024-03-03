@@ -95,7 +95,7 @@
         .form-search-advanced input, .form-search-advanced select {
             border-radius: 4px;
         }
-        @media only screen and (max-width: 400px) {
+        @media only screen and (max-width: 900px) {
             .hide_with_mobile {
                 display: none;
             }
