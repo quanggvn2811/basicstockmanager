@@ -91,7 +91,7 @@ $(document).ready(function() {
 
         let avgCost = totalCost / (suppliersCostElm.length - 1);
 
-        $('#avg_cost').val(avgCost);
+        $('#avg_cost').val(avgCost.toFixed(2));
     }
 });
 
